@@ -1,0 +1,22 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://proxy.smiddle.com.ua/soap"
+           targetNamespace="http://proxy.smiddle.com.ua/soap"
+           elementFormDefault="qualified">
+    <xs:element name="RecStartRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CucmCallID" type="xs:string"/>
+                <xs:element name="UserLogin" type="xs:string"/>
+                <xs:element name="PhoneDN" type="xs:string"/>
+                <xs:element name="DestinationDN" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RecStartResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SessionId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
