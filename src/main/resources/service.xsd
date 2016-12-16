@@ -19,4 +19,76 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="RecGetInfoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SessionId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RecGetInfoResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SessionInfo" type="tns:SessionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RecSearchRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userLogin" type="xs:string"/>
+                <xs:element name="phoneNumberA" type="xs:string"/>
+                <xs:element name="phoneNumberB" type="xs:string"/>
+                <xs:element name="dateFrom" type="xs:string"/>
+                <xs:element name="dateFromDuration" type="xs:int"/>
+                <xs:element name="durationFrom" type="xs:int"/>
+                <xs:element name="durationTo" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RecSearchResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="tns:SessionInfoList"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="SessionInfo">
+        <xs:sequence>
+            <xs:element name="tracksCount" type="xs:int"/>
+            <xs:element name="baseURL" type="xs:string"/>
+            <xs:element name="track" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="tns:TrackInfoVO"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="TrackInfoVO">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="trackNumber" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="SessionInfoList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SessionInfo" type="tns:SessionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--<xs:simpleType name="track">-->
+    <!--<xs:list itemType="tns:TrackInfoVO"/>-->
+    <!--</xs:simpleType>-->
+    <!--<xs:simpleType name="SessionInfoList">-->
+    <!--<xs:list itemType="tns:SessionInfo"/>-->
+    <!--</xs:simpleType>-->
 </xs:schema>

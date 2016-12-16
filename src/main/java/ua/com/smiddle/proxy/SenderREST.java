@@ -26,6 +26,11 @@ public class SenderREST {
         return makeRequest("server.url.recStart","server.url.recStart.method",new Object());
     }
 
+    public Object RecGetInfoResponse(String sessionId) throws Exception {
+        String resp =  makeRequest("server.url.recStart","server.url.recStart.method",new Object());
+        return JacksonUtil.jsonToObject(resp,Object.class);
+    }
+
     private String makeRequest(String actionURLCode, String method, Object request) throws Exception {
         URL url = new URL(buildURL(actionURLCode));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
