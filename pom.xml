@@ -10,6 +10,17 @@
     <packaging>war</packaging>
     <name>proxy</name>
 
+    <properties>
+        <project.commit>fb72fe4</project.commit>
+        <project.java>1.8</project.java>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.SPRING>4.2.5.RELEASE</project.SPRING>
+        <project.SPRING-WS>2.4.0.RELEASE</project.SPRING-WS>
+        <project.SERVLET>3.0.1</project.SERVLET>
+        <project.JACKSON>2.8.5</project.JACKSON>
+    </properties>
+
     <dependencies>
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->
@@ -31,39 +42,39 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>${project.SPRING}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>${project.SPRING}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-core</artifactId>
-            <version>2.4.0.RELEASE</version>
+            <version>${project.SPRING-WS}</version>
         </dependency>
         <!--SERVLET-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>${project.SERVLET}</version>
         </dependency>
         <!--JACKSON-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.5</version>
+            <version>${project.JACKSON}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.8.5</version>
+            <version>${project.JACKSON}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.8.5</version>
+            <version>${project.JACKSON}</version>
         </dependency>
         <!--WSDL-->
         <dependency>
@@ -105,8 +116,31 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${project.java}</source>
+                    <target>${project.java}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <warName>${artifactId}##${version}</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <archive>
+                        <manifest>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Project-Name>${artifactId}</Project-Name>
+                            <Project-Version>${version}</Project-Version>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <Build-OS>${os.name}</Build-OS>
+                            <Build-Java>${java.version}</Build-Java>
+                            <Build-By>${user.name}</Build-By>
+                            <Build-Commit>${project.commit}</Build-Commit>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
