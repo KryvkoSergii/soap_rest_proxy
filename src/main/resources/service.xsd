@@ -72,7 +72,7 @@
     <xs:element name="TrackInfoVO">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="trackNumber" type="xs:int"/>
+                <xs:element name="trackNumber" type="xs:integer"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

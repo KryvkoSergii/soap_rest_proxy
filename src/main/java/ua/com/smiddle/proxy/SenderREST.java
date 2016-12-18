@@ -22,19 +22,19 @@ public class SenderREST {
     private Environment env;
 
 
-    public String RecStart(String CucmCallID, String UserLogin, String PhoneDN, String DestinationDN) throws Exception {
-        return makeRequest("server.url.recStart","server.url.recStart.method",new Object());
+    public String RecStart(Object body) throws Exception {
+        return makeRequest("server.url.recStart", "server.url.recStart.method", body);
     }
 
-    public Object RecGetInfoResponse(String sessionId) throws Exception {
-        String resp =  makeRequest("server.url.recStart","server.url.recStart.method",new Object());
-        return JacksonUtil.jsonToObject(resp,Object.class);
+    public String RecGetInfo(Object body) throws Exception {
+        String resp = makeRequest("server.url.recGetInfo", "server.url.recGetInfo.method", body);
+        return resp;
     }
 
     private String makeRequest(String actionURLCode, String method, Object request) throws Exception {
         URL url = new URL(buildURL(actionURLCode));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(method);
+        connection.setRequestMethod(env.getProperty(method));
         connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         connection.setRequestProperty("Cache-Control", "no-cache");
         connection.setRequestProperty("Accept", "*/*");
@@ -60,7 +60,7 @@ public class SenderREST {
     }
 
     private String buildURL(String actionURLCode) {
-        String url = env.getProperty("server.url.base").concat(actionURLCode);
+        String url = env.getProperty("server.url.base").concat(env.getProperty(actionURLCode));
         return url;
     }
 }

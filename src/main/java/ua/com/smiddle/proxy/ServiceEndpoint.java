@@ -5,7 +5,14 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import ua.com.smiddle.proxy.model.json.crm.CRMCallStartReq;
+import ua.com.smiddle.proxy.model.json.crm.Info;
+import ua.com.smiddle.proxy.model.json.crm.ReporterRequest;
 import ua.com.smiddle.proxy.soap.*;
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author ksa on 14.12.16.
@@ -17,49 +24,101 @@ public class ServiceEndpoint {
     private static final String NAMESPACE_URI = "http://proxy.smiddle.com.ua/soap";
     @Autowired
     private SenderREST sender;
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecStartRequest")
     @ResponsePayload
     public RecStartResponse RecStart(@RequestPayload RecStartRequest req) {
-//        String resp = sender.RecStart(req.getCucmCallID(), req.getUserLogin(), req.getPhoneDN(), req.getDestinationDN());
+        CRMCallStartReq crmCallStartReq = new CRMCallStartReq();
+        crmCallStartReq.setLogin(req.getUserLogin());
+        crmCallStartReq.setDestinationDN(req.getDestinationDN());
+        crmCallStartReq.setSourceDN(req.getPhoneDN());
+        crmCallStartReq.setCcid(req.getCucmCallID());
         RecStartResponse recStartResp = new RecStartResponse();
-        recStartResp.setSessionId(String.valueOf(10));
+        try {
+            recStartResp.setSessionId(sender.RecStart(crmCallStartReq));
+        } catch (Exception e) {
+            e.printStackTrace();
+            recStartResp.setSessionId("");
+        }
+        System.out.println("session=" + recStartResp.getSessionId());
         return recStartResp;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecGetInfoRequest")
     @ResponsePayload
     public RecGetInfoResponse RecGetInfo(@RequestPayload RecGetInfoRequest req) {
-//        String resp = sender.RecStart(req.getCucmCallID(), req.getUserLogin(), req.getPhoneDN(), req.getDestinationDN());
+        ReporterRequest reporterRequest = new ReporterRequest();
+        reporterRequest.setCrmCallId(req.getSessionId());
+        Info resp = null;
+        try {
+            String tmp = sender.RecGetInfo(reporterRequest);
+            resp = (Info) JacksonUtil.jsonToObject(tmp, Info.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         RecGetInfoResponse recGetInfoResponse = new RecGetInfoResponse();
-        SessionInfo.Track t = new SessionInfo.Track();
-        t.setTrackInfoVO(new TrackInfoVO());
-        SessionInfo si = new SessionInfo();
-        si.setBaseURL("url");
-        si.setTracksCount(1);
-        si.getTrack().add(t);
-        recGetInfoResponse.setSessionInfo(si);
+        SessionInfo sessionInfo = getSessionInfo(resp);
+        recGetInfoResponse.setSessionInfo(sessionInfo);
         return recGetInfoResponse;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecSearchRequest")
     @ResponsePayload
     public RecSearchResponse RecSearch(@RequestPayload RecSearchRequest req) {
-//        String resp = sender.RecStart(req.getCucmCallID(), req.getUserLogin(), req.getPhoneDN(), req.getDestinationDN());
-        RecSearchResponse rec = new RecSearchResponse();
+        ReporterRequest reporterRequest = new ReporterRequest();
+        Info resp = null;
+        try {
+            Date date;
+            if (req.getDateFrom() != null && !req.getDateFrom().isEmpty()) {
+                date = formatter.parse(req.getDateFrom());
+                reporterRequest.setDateFrom(date);
+                if (req.getDateFromDuration() > 0)
+                    reporterRequest.setDateTo(new Date(date.getTime() + req.getDateFromDuration()));
+            }
+            if (req.getDurationFrom() > 0)
+                reporterRequest.setDurationFrom(Long.valueOf(req.getDurationFrom()));
+            if (req.getDurationTo() > 0)
+                reporterRequest.setDurationTo(Long.valueOf(req.getDurationTo()));
+            reporterRequest.setPhone(req.getPhoneNumberA());
+            reporterRequest.setPhone(req.getPhoneNumberB());
+            reporterRequest.setUserADLogin(req.getUserLogin());
+            String tmp = sender.RecGetInfo(reporterRequest);
+            resp = (Info) JacksonUtil.jsonToObject(tmp, Info.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        SessionInfo.Track t = new SessionInfo.Track();
-        t.setTrackInfoVO(new TrackInfoVO());
-        SessionInfo si = new SessionInfo();
-        si.setBaseURL("url");
-        si.setTracksCount(1);
-        si.getTrack().add(t);
-
-        SessionInfoList l = new SessionInfoList();
-        l.setSessionInfo(si);
-        rec.getSessionInfoList().add(l);
-        return rec;
+        RecSearchResponse recSearchResponse = new RecSearchResponse();
+        SessionInfoList list = new SessionInfoList();
+        list.setSessionInfo(getSessionInfo(resp));
+        recSearchResponse.getSessionInfoList().add(list);
+        return recSearchResponse;
     }
 
+    private SessionInfo getSessionInfo(Info resp) {
+        SessionInfo sessionInfo = new SessionInfo();
+        if (resp != null) {
+            sessionInfo.setBaseURL(resp.getBaseURL());
+            sessionInfo.setTracksCount(resp.getTracksCount());
+            SessionInfo.Track t;
+            TrackInfoVO trackInfoVO;
+            for (Long l : resp.getTrack()) {
+                t = new SessionInfo.Track();
+                trackInfoVO = new TrackInfoVO();
+                trackInfoVO.setTrackNumber(BigInteger.valueOf(l));
+                t.setTrackInfoVO(trackInfoVO);
+                sessionInfo.getTrack().add(t);
+            }
+
+            if(sessionInfo.getTrack()==null){
+                t = new SessionInfo.Track();
+                trackInfoVO = new TrackInfoVO();
+                t.setTrackInfoVO(trackInfoVO);
+                sessionInfo.getTrack().add(t);
+            }
+        }
+        return sessionInfo;
+    }
 
 }

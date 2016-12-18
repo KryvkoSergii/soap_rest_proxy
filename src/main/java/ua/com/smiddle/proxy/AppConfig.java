@@ -3,6 +3,7 @@ package ua.com.smiddle.proxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
@@ -17,6 +18,7 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 @EnableWs
 @ComponentScan("ua.com.smiddle.proxy")
+@PropertySource("classpath:application.properties")
 public class AppConfig extends WsConfigurerAdapter {
 
     @Bean(name = "service")
