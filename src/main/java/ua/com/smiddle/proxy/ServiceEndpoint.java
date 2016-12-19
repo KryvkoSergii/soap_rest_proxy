@@ -63,7 +63,7 @@ public class ServiceEndpoint {
     public RecGetInfoResponse RecGetInfo(@RequestPayload RecGetInfoRequest req) {
         logger.info(recGetInfo.concat(": got request=") + req.toString());
         ReporterRequest reporterRequest = new ReporterRequest();
-        reporterRequest.setCrmCallId(req.getSessionId());
+        reporterRequest.setCcid(req.getSessionId());
         Info resp = null;
         try {
             String tmp = sender.RecGetInfo(reporterRequest);
