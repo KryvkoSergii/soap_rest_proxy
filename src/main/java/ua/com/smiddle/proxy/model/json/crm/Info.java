@@ -38,4 +38,14 @@ public class Info {
     public void setTrack(List<Long> track) {
         this.track = track;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Info{");
+        sb.append("baseURL='").append(baseURL).append('\'');
+        sb.append(", tracksCount=").append(tracksCount);
+        sb.append(", track=").append(track);
+        sb.append('}');
+        return sb.toString();
+    }
 }
