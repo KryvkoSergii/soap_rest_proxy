@@ -10,6 +10,7 @@ import ua.com.smiddle.proxy.model.json.crm.Info;
 import ua.com.smiddle.proxy.model.json.crm.ReporterRequest;
 import ua.com.smiddle.proxy.soap.*;
 
+import javax.annotation.PostConstruct;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,10 +26,22 @@ public class ServiceEndpoint {
     @Autowired
     private SenderREST sender;
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ServiceEndpoint.class);
+    private static final String recStart = "RecStart";
+    private static final String recGetInfo = "RecGetInfo";
+    private static final String recSearch = "RecSearch";
+    private static final String getSessionInfo = "getSessionInfo";
+
+    @PostConstruct
+    private void init(){
+        logger.info("initialized");
+    }
+
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecStartRequest")
     @ResponsePayload
     public RecStartResponse RecStart(@RequestPayload RecStartRequest req) {
+        logger.info(recStart.concat(": got request=") + req.toString());
         CRMCallStartReq crmCallStartReq = new CRMCallStartReq();
         crmCallStartReq.setLogin(req.getUserLogin());
         crmCallStartReq.setDestinationDN(req.getDestinationDN());
@@ -38,34 +51,39 @@ public class ServiceEndpoint {
         try {
             recStartResp.setSessionId(sender.RecStart(crmCallStartReq));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(recStart.concat(": processed sessionID throw Exception=" + e.getMessage()));
             recStartResp.setSessionId("");
         }
-        System.out.println("session=" + recStartResp.getSessionId());
+        logger.debug(recStart.concat(": processing sessionID=" + req.toString()));
         return recStartResp;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecGetInfoRequest")
     @ResponsePayload
     public RecGetInfoResponse RecGetInfo(@RequestPayload RecGetInfoRequest req) {
+        logger.info(recGetInfo.concat(": got request=") + req.toString());
         ReporterRequest reporterRequest = new ReporterRequest();
         reporterRequest.setCrmCallId(req.getSessionId());
         Info resp = null;
         try {
             String tmp = sender.RecGetInfo(reporterRequest);
+            logger.debug(recGetInfo.concat(": received from SR=" + tmp));
             resp = (Info) JacksonUtil.jsonToObject(tmp, Info.class);
+            logger.debug(recGetInfo.concat(": processed Info=" + resp));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(recStart.concat(": processing Info throw Exception=" + e.getMessage()));
         }
         RecGetInfoResponse recGetInfoResponse = new RecGetInfoResponse();
         SessionInfo sessionInfo = getSessionInfo(resp);
         recGetInfoResponse.setSessionInfo(sessionInfo);
+        logger.debug(recGetInfo.concat(": processed RecGetInfoResponse=" + recGetInfoResponse.toString()));
         return recGetInfoResponse;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecSearchRequest")
     @ResponsePayload
     public RecSearchResponse RecSearch(@RequestPayload RecSearchRequest req) {
+        logger.info(recSearch.concat(": got request=") + req.toString());
         ReporterRequest reporterRequest = new ReporterRequest();
         Info resp = null;
         try {
@@ -83,20 +101,24 @@ public class ServiceEndpoint {
             reporterRequest.setPhone(req.getPhoneNumberA());
             reporterRequest.setPhone(req.getPhoneNumberB());
             reporterRequest.setUserADLogin(req.getUserLogin());
+            logger.debug(recSearch.concat(": processed ReporterRequest=" + reporterRequest.toString()));
             String tmp = sender.RecGetInfo(reporterRequest);
+            logger.debug(recSearch.concat(": received from SR=" + tmp));
             resp = (Info) JacksonUtil.jsonToObject(tmp, Info.class);
+            logger.debug(recSearch.concat(": processed Info=" + resp));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(recSearch.concat(": processing Info throw Exception=" + e.getMessage()));
         }
-
         RecSearchResponse recSearchResponse = new RecSearchResponse();
         SessionInfoList list = new SessionInfoList();
         list.setSessionInfo(getSessionInfo(resp));
         recSearchResponse.getSessionInfoList().add(list);
+        logger.debug(recSearch.concat(": processed RecSearchResponse=" + recSearchResponse.toString()));
         return recSearchResponse;
     }
 
     private SessionInfo getSessionInfo(Info resp) {
+        logger.debug(getSessionInfo.concat(": received Info=" + resp.toString()));
         SessionInfo sessionInfo = new SessionInfo();
         if (resp != null) {
             sessionInfo.setBaseURL(resp.getBaseURL());
@@ -111,13 +133,14 @@ public class ServiceEndpoint {
                 sessionInfo.getTrack().add(t);
             }
 
-            if(sessionInfo.getTrack()==null){
+            if (sessionInfo.getTrack() == null) {
                 t = new SessionInfo.Track();
                 trackInfoVO = new TrackInfoVO();
                 t.setTrackInfoVO(trackInfoVO);
                 sessionInfo.getTrack().add(t);
             }
         }
+        logger.debug(getSessionInfo.concat(": processed SessionInfo=" + sessionInfo.toString()));
         return sessionInfo;
     }
 

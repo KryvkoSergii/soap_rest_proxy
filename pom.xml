@@ -11,7 +11,7 @@
     <name>proxy</name>
 
     <properties>
-        <project.commit>fb72fe4</project.commit>
+        <project.commit>f44d739</project.commit>
         <project.java>1.8</project.java>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -19,6 +19,7 @@
         <project.SPRING-WS>2.4.0.RELEASE</project.SPRING-WS>
         <project.SERVLET>3.0.1</project.SERVLET>
         <project.JACKSON>2.8.5</project.JACKSON>
+        <project.log4j>1.2.17</project.log4j>
     </properties>
 
     <dependencies>
@@ -87,6 +88,12 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.2.12</version>
+        </dependency>
+        <!--LOGGER-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${project.log4j}</version>
         </dependency>
     </dependencies>
 
