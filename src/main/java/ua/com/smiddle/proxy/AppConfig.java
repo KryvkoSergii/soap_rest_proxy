@@ -11,8 +11,6 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
-import java.util.logging.Logger;
-
 /**
  * @author ksa on 14.12.16.
  * @project soap_rest_proxy
@@ -35,10 +33,5 @@ public class AppConfig extends WsConfigurerAdapter {
     @Bean
     public XsdSchema serviceSchema() {
         return new SimpleXsdSchema(new ClassPathResource("service.xsd"));
-    }
-
-    @Bean
-    public Logger logger() {
-        return Logger.getLogger("ua.com.smiddle.proxy");
     }
 }

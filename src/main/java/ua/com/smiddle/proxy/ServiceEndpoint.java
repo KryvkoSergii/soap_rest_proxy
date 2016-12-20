@@ -25,7 +25,7 @@ public class ServiceEndpoint {
     private static final String NAMESPACE_URI = "http://proxy.smiddle.com.ua/soap";
     @Autowired
     private SenderREST sender;
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ServiceEndpoint.class);
     private static final String recStart = "RecStart";
     private static final String recGetInfo = "RecGetInfo";
