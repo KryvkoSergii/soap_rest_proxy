@@ -133,11 +133,15 @@
                     <schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
                     <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
                     <clearOutputDir>false</clearOutputDir>
+                    <wsdl>true</wsdl>
+                    <xmlschema>false</xmlschema>
+                    <schemaFiles>CallMonitoringService.wsdl</schemaFiles>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
                 <configuration>
                     <source>${project.java}</source>
                     <target>${project.java}</target>

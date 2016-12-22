@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CallMonitoringServiceService" targetNamespace="http://services/" xmlns:ns1="http://callmonitoring.com/wsdl" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="http://10.3.45.164:8080/callMonitoring/CallMonitoringService?wsdl=CallMonitoringWs.wsdl" namespace="http://callmonitoring.com/wsdl">
+    </wsdl:import>
+  <wsdl:binding name="CallMonitoringServiceServiceSoapBinding" type="ns1:CallMonitoringWs">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RecLogout">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecLogout">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecLogoutResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecSearch">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecSearch">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecSearchResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecGetInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecGetInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecGetInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecLicenseStop">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecLicenseStop">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecLicenseStopResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecLogin">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecLogin">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecLoginResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecAddTag">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecAddTag">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecAddTagResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="Ping">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="PingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecStart">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecStart">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecStartResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecLicenseStart">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecLicenseStart">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecLicenseStartResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RecStop">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RecStop">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RecStopResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CallMonitoringServiceException">
+        <soap:fault name="CallMonitoringServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CallMonitoringServiceService">
+    <wsdl:port binding="tns:CallMonitoringServiceServiceSoapBinding" name="CallMonitoringServicePort">
+      <soap:address location="http://10.3.45.164:8080/callMonitoring/CallMonitoringService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
