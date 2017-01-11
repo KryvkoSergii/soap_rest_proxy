@@ -55,6 +55,15 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="RecLogoutRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="UserLogin" type="xs:string"/>
+                <xs:element name="PhoneDN" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:complexType name="SessionInfo">
         <xs:sequence>
             <xs:element name="tracksCount" type="xs:int"/>

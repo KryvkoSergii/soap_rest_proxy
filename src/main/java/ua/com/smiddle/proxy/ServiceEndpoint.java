@@ -6,6 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import ua.com.smiddle.proxy.model.json.crm.CRMCallStartReq;
+import ua.com.smiddle.proxy.model.json.crm.CRMLogout;
 import ua.com.smiddle.proxy.model.json.crm.Info;
 import ua.com.smiddle.proxy.model.json.crm.ReporterRequest;
 import ua.com.smiddle.proxy.soap.*;
@@ -30,6 +31,7 @@ public class ServiceEndpoint {
     private static final String recStart = "RecStart";
     private static final String recGetInfo = "RecGetInfo";
     private static final String recSearch = "RecSearch";
+    private static final String recLogout = "RecLogout";
     private static final String getSessionInfo = "getSessionInfo";
 
     @PostConstruct
@@ -56,6 +58,23 @@ public class ServiceEndpoint {
         }
         logger.debug(recStart.concat(": processing sessionID=" + req.toString()));
         return recStartResp;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecLogoutRequest")
+    @ResponsePayload
+    public void RecLogoutRequest(@RequestPayload RecLogoutRequest req) throws Exception {
+        logger.info(recLogout.concat(": got request=") + req.toString());
+        CRMLogout crmLogout = new CRMLogout();
+        crmLogout.setPhone(req.getPhoneDN());
+        crmLogout.setLoginAD(req.getUserLogin());
+        try {
+            logger.debug(recLogout.concat(": sending to SR=" + crmLogout.toString()));
+            String tmp = sender.RecLogout(crmLogout);
+            logger.debug(recLogout.concat(": command state from SR=" + tmp));
+        } catch (Exception e) {
+            logger.error(recLogout.concat(": processing Info throw Exception=" + e.getMessage()));
+            throw e;
+        }
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecGetInfoRequest")
