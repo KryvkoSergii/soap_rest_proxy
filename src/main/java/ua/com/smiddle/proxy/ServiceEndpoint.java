@@ -42,7 +42,7 @@ public class ServiceEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecStartRequest")
     @ResponsePayload
-    public RecStartResponse RecStart(@RequestPayload RecStartRequest req) {
+    public RecStartResponse RecStart(@RequestPayload RecStartRequest req) throws Exception {
         logger.info(recStart.concat(": got request=") + req.toString());
         CRMCallStartReq crmCallStartReq = new CRMCallStartReq();
         crmCallStartReq.setLogin(req.getUserLogin());
@@ -54,7 +54,8 @@ public class ServiceEndpoint {
             recStartResp.setSessionId(sender.RecStart(crmCallStartReq));
         } catch (Exception e) {
             logger.error(recStart.concat(": processed sessionID throw Exception=" + e.getMessage()));
-            recStartResp.setSessionId("");
+//            recStartResp.setSessionId("");
+            throw e;
         }
         logger.debug(recStart.concat(": processing sessionID=" + req.toString()));
         return recStartResp;
@@ -79,7 +80,7 @@ public class ServiceEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecGetInfoRequest")
     @ResponsePayload
-    public RecGetInfoResponse RecGetInfo(@RequestPayload RecGetInfoRequest req) {
+    public RecGetInfoResponse RecGetInfo(@RequestPayload RecGetInfoRequest req) throws Exception {
         logger.info(recGetInfo.concat(": got request=") + req.toString());
         ReporterRequest reporterRequest = new ReporterRequest();
         reporterRequest.setCrmCallId(req.getSessionId());
@@ -91,6 +92,7 @@ public class ServiceEndpoint {
             logger.debug(recGetInfo.concat(": processed Info=" + resp));
         } catch (Exception e) {
             logger.error(recStart.concat(": processing Info throw Exception=" + e.getMessage()));
+            throw e;
         }
         RecGetInfoResponse recGetInfoResponse = new RecGetInfoResponse();
         SessionInfo sessionInfo = getSessionInfo(resp);
@@ -101,7 +103,7 @@ public class ServiceEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "RecSearchRequest")
     @ResponsePayload
-    public RecSearchResponse RecSearch(@RequestPayload RecSearchRequest req) {
+    public RecSearchResponse RecSearch(@RequestPayload RecSearchRequest req) throws Exception {
         logger.info(recSearch.concat(": got request=") + req.toString());
         ReporterRequest reporterRequest = new ReporterRequest();
         Info resp = null;
@@ -127,6 +129,7 @@ public class ServiceEndpoint {
             logger.debug(recSearch.concat(": processed Info=" + resp));
         } catch (Exception e) {
             logger.error(recSearch.concat(": processing Info throw Exception=" + e.getMessage()));
+            throw e;
         }
         RecSearchResponse recSearchResponse = new RecSearchResponse();
         SessionInfoList list = new SessionInfoList();

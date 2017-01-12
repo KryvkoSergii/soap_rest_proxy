@@ -29,7 +29,8 @@ import org.jvnet.jaxb2_commons.locator.ObjectLocator;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="SessionId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="UserLogin" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="PhoneDN" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -40,38 +41,65 @@ import org.jvnet.jaxb2_commons.locator.ObjectLocator;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "sessionId"
+    "userLogin",
+    "phoneDN"
 })
-@XmlRootElement(name = "RecStartResponse")
-public class RecStartResponse
+@XmlRootElement(name = "RecLogoutRequest")
+public class RecLogoutRequest
     implements ToString
 {
 
-    @XmlElement(name = "SessionId", required = true)
-    protected String sessionId;
+    @XmlElement(name = "UserLogin", required = true)
+    protected String userLogin;
+    @XmlElement(name = "PhoneDN", required = true)
+    protected String phoneDN;
 
     /**
-     * Gets the value of the sessionId property.
+     * Gets the value of the userLogin property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getSessionId() {
-        return sessionId;
+    public String getUserLogin() {
+        return userLogin;
     }
 
     /**
-     * Sets the value of the sessionId property.
+     * Sets the value of the userLogin property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSessionId(String value) {
-        this.sessionId = value;
+    public void setUserLogin(String value) {
+        this.userLogin = value;
+    }
+
+    /**
+     * Gets the value of the phoneDN property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPhoneDN() {
+        return phoneDN;
+    }
+
+    /**
+     * Sets the value of the phoneDN property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPhoneDN(String value) {
+        this.phoneDN = value;
     }
 
     public String toString() {
@@ -90,9 +118,14 @@ public class RecStartResponse
 
     public StringBuilder appendFields(ObjectLocator locator, StringBuilder buffer, ToStringStrategy strategy) {
         {
-            String theSessionId;
-            theSessionId = this.getSessionId();
-            strategy.appendField(locator, this, "sessionId", buffer, theSessionId);
+            String theUserLogin;
+            theUserLogin = this.getUserLogin();
+            strategy.appendField(locator, this, "userLogin", buffer, theUserLogin);
+        }
+        {
+            String thePhoneDN;
+            thePhoneDN = this.getPhoneDN();
+            strategy.appendField(locator, this, "phoneDN", buffer, thePhoneDN);
         }
         return buffer;
     }
